@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Hoài Thương · Louisa</title>
+<link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Nunito:wght@200;300;400;500&display=swap" rel="stylesheet"/>
+<style>
+:root {
+  --bg:#fdf8f5;--rose:#d4836a;--rose-light:#f2c4b0;--nude:#e8c5b0;
+  --nude-dim:rgba(212,131,106,0.1);--text:#2d2420;--muted:#9e8880;
+  --border:rgba(212,131,106,0.18);--white:#fffcfa;
+  --shadow:0 4px 40px rgba(212,131,106,0.08);
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{background:var(--bg);color:var(--text);font-family:'Nunito',sans-serif;font-weight:300;min-height:100vh;}
+
+/* HERO */
+.hero{background:var(--white);border-bottom:1px solid var(--border);padding:64px 24px 52px;text-align:center;position:relative;overflow:hidden;}
+.hero::before{content:'';position:absolute;top:-60px;left:50%;transform:translateX(-50%);width:500px;height:300px;background:radial-gradient(ellipse,rgba(212,131,106,0.12) 0%,transparent 70%);pointer-events:none;}
+.hero-tag{display:inline-block;font-size:0.65rem;letter-spacing:4px;text-transform:uppercase;color:var(--rose);border:1px solid var(--border);padding:5px 14px;border-radius:20px;margin-bottom:24px;animation:fadeUp 0.8s ease both;}
+.hero-name{font-family:'Libre Baskerville',serif;font-size:clamp(2.8rem,8vw,5.5rem);font-weight:400;line-height:1.05;animation:fadeUp 0.8s ease 0.1s both;}
+.hero-name em{font-style:italic;color:var(--rose);}
+.hero-bio{margin-top:16px;font-size:0.9rem;color:var(--muted);font-weight:300;letter-spacing:0.5px;animation:fadeUp 0.8s ease 0.2s both;}
+.social-pills{display:flex;justify-content:center;gap:10px;margin-top:28px;flex-wrap:wrap;animation:fadeUp 0.8s ease 0.3s both;}
+.pill{display:flex;align-items:center;gap:7px;text-decoration:none;color:var(--muted);font-size:0.72rem;font-weight:400;letter-spacing:1.5px;text-transform:uppercase;padding:9px 18px;border:1px solid var(--border);border-radius:30px;background:var(--white);transition:all 0.25s;}
+.pill:hover{background:var(--rose);color:white;border-color:var(--rose);transform:translateY(-2px);box-shadow:0 6px 20px rgba(212,131,106,0.25);}
+.pill svg{width:14px;height:14px;fill:currentColor;flex-shrink:0;}
+
+/* ADMIN LOGIN */
+.admin-login-btn{position:absolute;top:18px;right:20px;padding:8px 16px;border:1px solid var(--border);border-radius:30px;background:var(--white);color:var(--rose);font-family:'Nunito',sans-serif;font-size:0.68rem;font-weight:500;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;transition:all 0.25s;box-shadow:0 4px 20px rgba(212,131,106,0.08);}
+.admin-login-btn:hover{background:var(--rose);border-color:var(--rose);color:white;transform:translateY(-1px);}
+.is-admin .admin-login-btn{display:none;}
+
+/* ADMIN BADGE */
+.admin-bar{display:none;background:var(--nude-dim);border-bottom:1px solid var(--border);padding:8px 24px;text-align:center;font-size:0.72rem;color:var(--rose);letter-spacing:1px;}
+.admin-bar.show{display:flex;align-items:center;justify-content:center;gap:12px;}
+.btn-logout{background:none;border:1px solid var(--border);border-radius:20px;padding:3px 12px;font-size:0.65rem;color:var(--muted);cursor:pointer;font-family:'Nunito',sans-serif;transition:all 0.2s;}
+.btn-logout:hover{border-color:var(--rose);color:var(--rose);}
+
+/* LOGIN MODAL */
+.modal-overlay{position:fixed;inset:0;background:rgba(45,36,32,0.5);backdrop-filter:blur(4px);z-index:1000;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity 0.3s;}
+.modal-overlay.open{opacity:1;pointer-events:all;}
+.modal{background:var(--white);border-radius:20px;padding:36px 32px;width:100%;max-width:360px;box-shadow:0 20px 60px rgba(212,131,106,0.2);animation:fadeUp 0.3s ease both;text-align:center;}
+.modal h2{font-family:'Libre Baskerville',serif;font-size:1.3rem;font-weight:400;color:var(--text);margin-bottom:6px;}
+.modal p{font-size:0.8rem;color:var(--muted);margin-bottom:24px;}
+.modal input{width:100%;padding:13px 16px;background:var(--bg);border:1px solid var(--border);border-radius:10px;font-family:'Nunito',sans-serif;font-size:0.9rem;color:var(--text);outline:none;text-align:center;letter-spacing:2px;transition:border-color 0.2s;}
+.modal input:focus{border-color:var(--rose-light);}
+.modal input.error{border-color:#e74c3c;animation:shake 0.3s ease;}
+.btn-login{width:100%;margin-top:14px;padding:13px;background:linear-gradient(135deg,var(--rose),#c07060);color:white;border:none;border-radius:30px;font-family:'Nunito',sans-serif;font-size:0.8rem;font-weight:500;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;transition:all 0.2s;box-shadow:0 4px 16px rgba(212,131,106,0.3);}
+.btn-login:hover{transform:translateY(-1px);}
+.modal-close{position:absolute;top:16px;right:20px;background:none;border:none;font-size:1.4rem;color:var(--muted);cursor:pointer;line-height:1;}
+
+@keyframes shake{0%,100%{transform:translateX(0);}25%{transform:translateX(-6px);}75%{transform:translateX(6px);}}
+
+/* QR MODAL */
+.qr-overlay{position:fixed;inset:0;background:rgba(45,36,32,0.5);backdrop-filter:blur(4px);z-index:1000;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity 0.3s;}
+.qr-overlay.open{opacity:1;pointer-events:all;}
+.qr-box{background:var(--white);border-radius:24px;padding:32px 28px;width:100%;max-width:320px;box-shadow:0 20px 60px rgba(212,131,106,0.2);text-align:center;position:relative;animation:fadeUp 0.3s ease both;}
+.qr-box h3{font-family:'Libre Baskerville',serif;font-size:1.1rem;font-weight:400;color:var(--text);margin-bottom:4px;}
+.qr-box p{font-size:0.78rem;color:var(--muted);margin-bottom:20px;}
+.qr-box img{width:100%;border-radius:12px;border:1px solid var(--border);}
+.qr-close{position:absolute;top:14px;right:18px;background:none;border:none;font-size:1.4rem;color:var(--muted);cursor:pointer;line-height:1;}
+
+/* PAGE */
+.page{max-width:780px;margin:0 auto;padding:48px 20px 100px;}
+
+/* COMPOSER — hidden by default */
+.composer{background:var(--white);border:1px solid var(--border);border-radius:16px;padding:28px;margin-bottom:48px;box-shadow:var(--shadow);display:none;}
+.composer.show{display:block;}
+.composer-head{font-family:'Libre Baskerville',serif;font-size:1rem;font-weight:400;color:var(--rose);margin-bottom:18px;}
+.type-row{display:flex;gap:6px;margin-bottom:18px;flex-wrap:wrap;}
+.tab-btn{padding:7px 16px;background:var(--bg);border:1px solid var(--border);border-radius:20px;font-family:'Nunito',sans-serif;font-size:0.72rem;font-weight:500;letter-spacing:1px;color:var(--muted);cursor:pointer;transition:all 0.2s;}
+.tab-btn:hover{color:var(--rose);border-color:var(--rose-light);}
+.tab-btn.on{background:var(--rose);color:white;border-color:var(--rose);}
+.fields{display:none;flex-direction:column;gap:12px;}
+.fields.on{display:flex;}
+input[type=text],input[type=url],textarea{width:100%;padding:12px 16px;background:var(--bg);border:1px solid var(--border);border-radius:10px;font-family:'Nunito',sans-serif;font-size:0.875rem;font-weight:300;color:var(--text);outline:none;transition:border-color 0.2s,box-shadow 0.2s;}
+input:focus,textarea:focus{border-color:var(--rose-light);box-shadow:0 0 0 3px rgba(212,131,106,0.08);}
+input::placeholder,textarea::placeholder{color:var(--muted);opacity:0.6;}
+textarea{resize:vertical;min-height:100px;}
+
+.upload-zone{border:2px dashed var(--border);border-radius:12px;padding:32px 20px;text-align:center;cursor:pointer;transition:all 0.2s;background:var(--bg);position:relative;}
+.upload-zone:hover,.upload-zone.drag{border-color:var(--rose);background:var(--nude-dim);}
+.upload-zone input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%;}
+.upload-icon{font-size:2rem;margin-bottom:8px;}
+.upload-zone p{font-size:0.8rem;color:var(--muted);}
+.upload-zone span{font-size:0.7rem;color:var(--rose-light);display:block;margin-top:4px;}
+.img-previews{display:grid;grid-template-columns:repeat(auto-fill,minmax(90px,1fr));gap:8px;margin-top:4px;}
+.img-preview-item{position:relative;aspect-ratio:1;border-radius:8px;overflow:hidden;}
+.img-preview-item img{width:100%;height:100%;object-fit:cover;}
+.img-preview-item .rm{position:absolute;top:4px;right:4px;width:22px;height:22px;background:rgba(0,0,0,0.55);border:none;border-radius:50%;color:white;font-size:0.7rem;cursor:pointer;display:flex;align-items:center;justify-content:center;}
+.img-preview-item .rm:hover{background:var(--rose);}
+
+.btn-post{align-self:flex-end;padding:12px 28px;background:linear-gradient(135deg,var(--rose),#c07060);color:white;border:none;border-radius:30px;font-family:'Nunito',sans-serif;font-size:0.78rem;font-weight:500;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;transition:all 0.2s;box-shadow:0 4px 16px rgba(212,131,106,0.3);display:flex;align-items:center;gap:8px;}
+.btn-post:hover{transform:translateY(-2px);}
+.btn-post:disabled{opacity:0.6;cursor:not-allowed;transform:none;}
+.spin{width:14px;height:14px;border:2px solid rgba(255,255,255,0.4);border-top-color:white;border-radius:50%;animation:spin 0.7s linear infinite;display:none;}
+.btn-post.loading .spin{display:block;}
+
+/* FEED */
+#feed{display:flex;flex-direction:column;}
+.feed-loading{text-align:center;padding:60px 20px;color:var(--muted);}
+.dots{display:inline-flex;gap:6px;margin-top:12px;}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--rose-light);animation:bounce 1.2s ease-in-out infinite;}
+.dot:nth-child(2){animation-delay:0.2s;}
+.dot:nth-child(3){animation-delay:0.4s;}
+
+.post-card{background:var(--white);border:1px solid var(--border);border-radius:16px;overflow:hidden;margin-bottom:24px;box-shadow:var(--shadow);animation:fadeUp 0.5s ease both;transition:transform 0.2s,box-shadow 0.2s;}
+.post-card:hover{transform:translateY(-2px);box-shadow:0 8px 48px rgba(212,131,106,0.12);}
+.card-header{display:flex;align-items:center;justify-content:space-between;padding:16px 20px 0;}
+.card-meta{display:flex;align-items:center;gap:10px;}
+.avatar{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,var(--nude),var(--rose-light));display:flex;align-items:center;justify-content:center;font-family:'Libre Baskerville',serif;font-style:italic;font-size:0.9rem;color:var(--rose);flex-shrink:0;}
+.card-author{font-size:0.82rem;font-weight:500;color:var(--text);}
+.card-date{font-size:0.7rem;color:var(--muted);margin-top:1px;}
+.card-actions{display:flex;gap:6px;align-items:center;}
+.type-chip{font-size:0.6rem;letter-spacing:1.5px;text-transform:uppercase;color:var(--rose);background:var(--nude-dim);padding:3px 10px;border-radius:20px;border:1px solid var(--border);}
+.btn-del{display:none;background:none;border:none;color:var(--muted);cursor:pointer;font-size:0.75rem;padding:4px 8px;border-radius:6px;transition:all 0.2s;font-family:'Nunito',sans-serif;}
+.btn-del:hover{background:#fee;color:#c0392b;}
+.is-admin .btn-del{display:inline-block;}
+
+.card-body{padding:16px 20px 20px;}
+.post-title{font-family:'Libre Baskerville',serif;font-size:1.25rem;font-weight:400;color:var(--text);margin-bottom:10px;line-height:1.4;}
+.post-text{font-size:0.9rem;line-height:1.8;color:#5a4a44;font-weight:300;}
+
+.gallery-1 img{width:100%;max-height:500px;object-fit:cover;display:block;}
+.gallery-2{display:grid;grid-template-columns:1fr 1fr;gap:2px;}
+.gallery-3{display:grid;grid-template-columns:2fr 1fr;grid-template-rows:1fr 1fr;gap:2px;max-height:420px;}
+.gallery-3 img:first-child{grid-row:span 2;}
+.gallery-4{display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;gap:2px;max-height:440px;}
+.gallery-many{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;}
+.gallery-2 img,.gallery-3 img,.gallery-4 img{width:100%;height:100%;object-fit:cover;display:block;}
+.gallery-many img{width:100%;aspect-ratio:1;object-fit:cover;display:block;}
+.img-caption{padding:12px 20px 16px;font-size:0.82rem;color:var(--muted);font-style:italic;font-family:'Libre Baskerville',serif;}
+
+.video-wrap{position:relative;padding-bottom:56.25%;height:0;overflow:hidden;}
+.video-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:none;}
+.ig-wrap{padding:0 20px 20px;display:flex;justify-content:center;}
+.instagram-media{min-width:unset!important;width:100%!important;max-width:480px!important;border-radius:12px!important;}
+
+.empty{text-align:center;padding:80px 20px;color:var(--muted);}
+.empty-icon{font-size:3rem;margin-bottom:16px;opacity:0.4;}
+.empty p{font-family:'Libre Baskerville',serif;font-style:italic;font-size:1.1rem;margin-bottom:6px;}
+.empty small{font-size:0.75rem;opacity:0.6;}
+
+.toast{position:fixed;bottom:28px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--text);color:var(--white);padding:11px 22px;border-radius:30px;font-size:0.78rem;letter-spacing:0.5px;opacity:0;transition:all 0.3s;pointer-events:none;z-index:9999;white-space:nowrap;}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+
+.lightbox{position:fixed;inset:0;background:rgba(0,0,0,0.88);display:flex;align-items:center;justify-content:center;z-index:9999;opacity:0;pointer-events:none;transition:opacity 0.3s;}
+.lightbox.open{opacity:1;pointer-events:all;}
+.lightbox img{max-width:90vw;max-height:90vh;object-fit:contain;border-radius:4px;}
+.lightbox-close{position:absolute;top:20px;right:24px;background:none;border:none;color:white;font-size:2rem;cursor:pointer;line-height:1;}
+
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:translateY(0);}}
+@keyframes spin{to{transform:rotate(360deg);}}
+@keyframes bounce{0%,80%,100%{transform:scale(0.6);opacity:0.4;}40%{transform:scale(1);opacity:1;}}
+</style>
+</head>
+<body>
+
+<!-- ADMIN BAR -->
+<div class="admin-bar" id="admin-bar">
+  ✦ Chế độ Admin đang bật
+  <button class="btn-logout" onclick="logout()">Đăng xuất</button>
+</div>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="hero-tag">✦ Personal Blog</div>
+  <h1 class="hero-name">Hoài <em>Thương</em> · Louisa</h1>
+  <p class="hero-bio">life · beauty · travel · những điều nhỏ bé đáng yêu 🌸</p>
+  <div class="social-pills">
+    <a href="https://www.facebook.com/HoaiThuong.Louisa/" target="_blank" class="pill">
+      <svg viewBox="0 0 24 24"><path d="M24 12.07C24 5.41 18.63 0 12 0S0 5.41 0 12.07C0 18.1 4.39 23.1 10.13 24v-8.44H7.08v-3.49h3.04V9.41c0-3.02 1.8-4.7 4.54-4.7 1.31 0 2.68.24 2.68.24v2.97h-1.51c-1.49 0-1.95.93-1.95 1.88v2.27h3.32l-.53 3.5h-2.79V24C19.61 23.1 24 18.1 24 12.07z"/></svg>
+      Facebook
+    </a>
+    <a href="https://www.instagram.com/__hoai_thuong__/" target="_blank" class="pill">
+      <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+      Instagram
+    </a>
+    <a href="https://www.tiktok.com/@hoaithuong_louisa" target="_blank" class="pill">
+      <svg viewBox="0 0 24 24"><path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 00-.79-.05 6.34 6.34 0 00-6.34 6.34 6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.33-6.34V8.69a8.16 8.16 0 004.77 1.52V6.76a4.85 4.85 0 01-1-.07z"/></svg>
+      TikTok
+    </a>
+    <button class="pill" onclick="openQR()">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 3h7v7H3V3zm1 1v5h5V4H4zm1 1h3v3H5V5zM14 3h7v7h-7V3zm1 1v5h5V4h-5zm1 1h3v3h-3V5zM3 14h7v7H3v-7zm1 1v5h5v-5H4zm1 1h3v3H5v-3zM16 14h2v2h-2v-2zM14 14h2v2h-2v-2zM14 18h2v2h-2v-2zM18 18h2v2h-2v-2zM18 16h2v2h-2v-2zM16 16h2v2h-2v-2zM20 14h2v2h-2v-2z"/></svg>
+      Chuyển khoản
+    </button>
+  </div>
+  <button class="admin-login-btn" onclick="openLogin()">Admin</button>
+</header>
+
+<!-- LOGIN MODAL -->
+<div class="modal-overlay" id="modal">
+  <div class="modal" style="position:relative;">
+    <button class="modal-close" onclick="closeLogin()">×</button>
+    <h2>Xin chào 🌸</h2>
+    <p>Nhập mật khẩu để vào chế độ quản lý</p>
+    <input type="password" id="pw-input" placeholder="••••••••" onkeydown="if(event.key==='Enter')tryLogin()"/>
+    <button class="btn-login" onclick="tryLogin()">Đăng nhập</button>
+  </div>
+</div>
+
+<!-- QR MODAL -->
+<div class="qr-overlay" id="qr-modal" onclick="closeQR()">
+  <div class="qr-box" onclick="event.stopPropagation()">
+    <button class="qr-close" onclick="closeQR()">×</button>
+    <h3>Chuyển khoản 🌸</h3>
+    <p>Techcombank · HOANG THI HOAI THUONG<br/>1903 4995 5580 11</p>
+    <img src="https://res.cloudinary.com/dffjnmuq4/image/upload/v1778662647/694669923_1525391502347178_4103528668922999919_n_t0khwi.jpg" alt="QR Techcombank"/>
+  </div>
+</div>
+
+<div class="page">
+  <!-- COMPOSER — only visible to admin -->
+  <div class="composer" id="composer">
+    <div class="composer-head">✦ Thêm bài mới</div>
+    <div class="type-row">
+      <button class="tab-btn on" onclick="setTab('text')">✍️ Viết</button>
+      <button class="tab-btn" onclick="setTab('photo')">🖼️ Ảnh</button>
+      <button class="tab-btn" onclick="setTab('video')">▶️ Video</button>
+      <button class="tab-btn" onclick="setTab('instagram')">📸 Instagram</button>
+    </div>
+
+    <div class="fields on" id="f-text">
+      <input type="text" id="t-title" placeholder="Tiêu đề bài viết..."/>
+      <textarea id="t-body" rows="4" placeholder="Kể gì đó cho mọi người nghe nhé 🌸"></textarea>
+      <button class="btn-post" id="btn-text" onclick="pub('text')"><div class="spin"></div>Đăng bài →</button>
+    </div>
+
+    <div class="fields" id="f-photo">
+      <div class="upload-zone" id="dropzone">
+        <input type="file" id="file-input" accept="image/*" multiple onchange="handleFiles(this.files)"/>
+        <div class="upload-icon">🌸</div>
+        <p>Kéo thả ảnh vào đây hoặc click để chọn</p>
+        <span>Hỗ trợ nhiều ảnh cùng lúc · JPG PNG WEBP</span>
+      </div>
+      <div class="img-previews" id="previews"></div>
+      <input type="text" id="p-caption" placeholder="Caption cho ảnh (tuỳ chọn)..."/>
+      <button class="btn-post" id="btn-photo" onclick="pub('photo')"><div class="spin"></div>Đăng ảnh →</button>
+    </div>
+
+    <div class="fields" id="f-video">
+      <input type="url" id="v-url" placeholder="Link YouTube hoặc Vimeo..."/>
+      <input type="text" id="v-caption" placeholder="Caption (tuỳ chọn)..."/>
+      <button class="btn-post" id="btn-video" onclick="pub('video')"><div class="spin"></div>Đăng video →</button>
+    </div>
+
+    <div class="fields" id="f-instagram">
+      <input type="url" id="ig-url" placeholder="https://www.instagram.com/p/..."/>
+      <input type="text" id="ig-caption" placeholder="Caption (tuỳ chọn)..."/>
+      <button class="btn-post" id="btn-instagram" onclick="pub('instagram')"><div class="spin"></div>Đăng →</button>
+    </div>
+  </div>
+
+  <div id="feed">
+    <div class="feed-loading">
+      <div style="font-size:0.85rem;color:var(--muted);">Đang tải bài viết...</div>
+      <div class="dots"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>
+    </div>
+  </div>
+</div>
+
+<div class="lightbox" id="lightbox" onclick="closeLb()">
+  <button class="lightbox-close">×</button>
+  <img id="lb-img" src="" alt="" onclick="event.stopPropagation()"/>
+</div>
+<div class="toast" id="toast"></div>
+
+<script async src="//www.instagram.com/embed.js"></script>
+<script>
+const API_URL = ['localhost', '127.0.0.1'].includes(window.location.hostname)
+  ? window.location.origin
+  : 'https://be-new-0h9g.onrender.com';
+const CDN_PRESET  = 'pcdnav5l';
+
+let posts = [];
+let pending = [];
+let curTab = 'text';
+let isAdmin = sessionStorage.getItem('louisa_admin') === '1';
+
+// ── AUTH ──
+function openLogin() {
+  document.getElementById('modal').classList.add('open');
+  setTimeout(() => document.getElementById('pw-input').focus(), 100);
+}
+function closeLogin() {
+  document.getElementById('modal').classList.remove('open');
+  document.getElementById('pw-input').value = '';
+  document.getElementById('pw-input').classList.remove('error');
+}
+async function tryLogin() {
+    const pw = document.getElementById('pw-input').value;
+    const res = await fetch(`${API_URL}/auth/login`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ password: pw })
+    });
+    if (res.ok) {
+        isAdmin = true;
+        sessionStorage.setItem('louisa_admin', '1');
+        closeLogin();
+        applyAdminUI();
+        toast('Chào mừng trở lại Thương 🌸');
+    } else {
+        const inp = document.getElementById('pw-input');
+        inp.classList.add('error');
+        inp.value = '';
+        setTimeout(() => inp.classList.remove('error'), 600);
+    }
+}
+function logout() {
+  isAdmin = false;
+  sessionStorage.removeItem('louisa_admin');
+  applyAdminUI();
+  toast('Đã đăng xuất');
+}
+function applyAdminUI() {
+  document.getElementById('composer').classList.toggle('show', isAdmin);
+  document.getElementById('admin-bar').classList.toggle('show', isAdmin);
+  document.body.classList.toggle('is-admin', isAdmin);
+  render();
+}
+
+// ── JSONBIN ──
+async function loadPosts() {
+    try {
+        const res = await fetch(`${API_URL}/posts`);
+        posts = await res.json();
+    } catch (e) { posts = []; }
+    render();
+}
+async function addPost(postData) {
+    const res = await fetch(`${API_URL}/posts`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(postData)
+    });
+    return await res.json();
+}
+async function removePost(id) {
+    await fetch(`${API_URL}/posts/${id}`, { method: 'DELETE' });
+}
+
+// ── CLOUDINARY ──
+async function uploadToCloud(file) {
+  const fd = new FormData();
+  fd.append('image', file);
+  const res = await fetch(`${API_URL}/upload`, { method: 'POST', body: fd });
+  const data = await res.json();
+  return data.url; // BE trả về URL ảnh
+}
+// ── TAB ──
+function setTab(t) {
+  curTab = t;
+  document.querySelectorAll('.tab-btn').forEach((b,i) =>
+    b.classList.toggle('on', ['text','photo','video','instagram'][i] === t));
+  document.querySelectorAll('.fields').forEach(f => f.classList.remove('on'));
+  document.getElementById('f-'+t).classList.add('on');
+}
+
+// ── FILE UPLOAD ──
+function handleFiles(files) {
+  Array.from(files).forEach(file => {
+    const url = URL.createObjectURL(file);
+    pending.push({ file, previewUrl: url });
+    renderPreviews();
+  });
+}
+function renderPreviews() {
+  document.getElementById('previews').innerHTML = pending.map((item,i) => `
+    <div class="img-preview-item">
+      <img src="${item.previewUrl}"/>
+      <button class="rm" onclick="removePending(${i})">×</button>
+    </div>`).join('');
+}
+function removePending(i) {
+  URL.revokeObjectURL(pending[i].previewUrl);
+  pending.splice(i, 1);
+  renderPreviews();
+}
+
+const dz = document.getElementById('dropzone');
+dz.addEventListener('dragover', e => { e.preventDefault(); dz.classList.add('drag'); });
+dz.addEventListener('dragleave', () => dz.classList.remove('drag'));
+dz.addEventListener('drop', e => { e.preventDefault(); dz.classList.remove('drag'); handleFiles(e.dataTransfer.files); });
+
+// ── HELPERS ──
+function ytId(u){const m=u.match(/(?:youtu\.be\/|youtube\.com(?:\/embed\/|\/v\/|\/watch\?v=|\/watch\?.+&v=))([^"&?\/\s]{11})/);return m?m[1]:null;}
+function vmId(u){const m=u.match(/vimeo\.com\/(\d+)/);return m?m[1]:null;}
+function igClean(u){const m=u.match(/instagram\.com\/(p|reel)\/([A-Za-z0-9_-]+)/);return m?`https://www.instagram.com/${m[1]}/${m[2]}/`:null;}
+function today(){return new Date().toLocaleDateString('vi-VN',{day:'2-digit',month:'2-digit',year:'numeric'});}
+function toast(msg,dur=2500){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),dur);}
+function setLoading(tab,on){const b=document.getElementById('btn-'+tab);b.classList.toggle('loading',on);b.disabled=on;}
+
+// ── PUBLISH ──
+async function pub(type) {
+  if (!isAdmin) return;
+  let p = { type, id: Date.now(), date: today() };
+  setLoading(type, true);
+  try {
+    if (type==='text') {
+      const title=document.getElementById('t-title').value.trim();
+      const body=document.getElementById('t-body').value.trim();
+      if (!body&&!title){toast('Viết gì đó đi bạn ơi 🌸');return;}
+      p.title=title;p.body=body;
+      document.getElementById('t-title').value='';
+      document.getElementById('t-body').value='';
+    }
+    if (type==='photo') {
+      if (!pending.length){toast('Chọn ảnh trước nhé!');return;}
+      toast('Đang upload ảnh lên cloud... ☁️',10000);
+      const urls=await Promise.all(pending.map(item=>uploadToCloud(item.file)));
+      p.images=urls;
+      p.caption=document.getElementById('p-caption').value.trim();
+      pending.forEach(item=>URL.revokeObjectURL(item.previewUrl));
+      pending=[];renderPreviews();
+      document.getElementById('p-caption').value='';
+      document.getElementById('file-input').value='';
+    }
+    if (type==='video') {
+      const url=document.getElementById('v-url').value.trim();
+      const yt=ytId(url),vm=vmId(url);
+      if (!yt&&!vm){toast('Chỉ hỗ trợ YouTube và Vimeo!');return;}
+      p.embedUrl=yt?`https://www.youtube.com/embed/${yt}`:`https://player.vimeo.com/video/${vm}`;
+      p.caption=document.getElementById('v-caption').value.trim();
+      document.getElementById('v-url').value='';
+      document.getElementById('v-caption').value='';
+    }
+    if (type==='instagram') {
+      const url=igClean(document.getElementById('ig-url').value.trim());
+      if (!url){toast('Link Instagram không hợp lệ!');return;}
+      p.url=url;
+      p.caption=document.getElementById('ig-caption').value.trim();
+      document.getElementById('ig-url').value='';
+      document.getElementById('ig-caption').value='';
+    }
+    const saved = await addPost(p);
+    posts.unshift(saved);
+    render();
+    toast('Đã đăng thành công 🌸');
+    setTimeout(()=>{if(window.instgrm)window.instgrm.Embeds.process();},400);
+  } catch(err) {
+    toast('Có lỗi xảy ra, thử lại nhé!');
+  } finally {
+    setLoading(type,false);
+  }
+}
+
+async function delPost(id) {
+  if (!isAdmin) return;
+  await fetch(`${API_URL}/posts/${id}`, { method: 'DELETE' });
+  posts = posts.filter(p => p.id !== id);
+  render();
+  toast('Đã xoá');
+}
+
+// ── GALLERY ──
+function gallery(images) {
+  const n=images.length;
+  const img=src=>`<img src="${src}" alt="" loading="lazy" onclick="openLb('${src}')" style="cursor:zoom-in;"/>`;
+  if(n===1)return`<div class="gallery-1">${img(images[0])}</div>`;
+  if(n===2)return`<div class="gallery-2">${images.map(img).join('')}</div>`;
+  if(n===3)return`<div class="gallery-3">${images.map(img).join('')}</div>`;
+  if(n===4)return`<div class="gallery-4">${images.map(img).join('')}</div>`;
+  return`<div class="gallery-many">${images.slice(0,9).map((src,i)=>{
+    const extra=(i===8&&n>9)?`<div style="position:absolute;inset:0;background:rgba(0,0,0,0.45);display:flex;align-items:center;justify-content:center;color:white;font-size:1.4rem;font-family:'Libre Baskerville',serif;font-style:italic;">+${n-9}</div>`:'';
+    return`<div style="position:relative;overflow:hidden;">${img(src)}${extra}</div>`;
+  }).join('')}</div>`;
+}
+
+function typeLabel(t){return{text:'Bài viết',photo:'Ảnh',video:'Video',instagram:'Instagram'}[t]||t;}
+
+// ── RENDER ──
+function render() {
+  const feed=document.getElementById('feed');
+  if(!posts.length){
+    feed.innerHTML=`<div class="empty"><div class="empty-icon">🌸</div><p>Blog đang trống...</p><small>Chưa có bài viết nào cả!</small></div>`;
+    return;
+  }
+  feed.innerHTML=posts.map((p,i)=>{
+    let inner='';
+    if(p.type==='text')inner=`<div class="card-body">${p.title?`<div class="post-title">${p.title}</div>`:''}${p.body?`<div class="post-text">${p.body.replace(/\n/g,'<br/>')}</div>`:''}</div>`;
+    if(p.type==='photo')inner=`${gallery(p.images)}${p.caption?`<div class="img-caption">${p.caption}</div>`:''}`;
+    if(p.type==='video')inner=`<div class="video-wrap"><iframe src="${p.embedUrl}" allowfullscreen loading="lazy"></iframe></div>${p.caption?`<div class="img-caption">${p.caption}</div>`:''}`;
+    if(p.type==='instagram')inner=`<div class="ig-wrap"><blockquote class="instagram-media" data-instgrm-permalink="${p.url}" data-instgrm-version="14" style="width:100%;max-width:480px;"></blockquote></div>${p.caption?`<div class="img-caption">${p.caption}</div>`:''}`;
+    return`<div class="post-card" style="animation-delay:${i*0.06}s">
+      <div class="card-header">
+        <div class="card-meta">
+          <div class="avatar">L</div>
+          <div><div class="card-author">Hoài Thương · Louisa</div><div class="card-date">${p.date}</div></div>
+        </div>
+        <div class="card-actions">
+          <span class="type-chip">${typeLabel(p.type)}</span>
+          <button class="btn-del" onclick="delPost(${p.id})">× xoá</button>
+        </div>
+      </div>${inner}</div>`;
+  }).join('');
+  if(window.instgrm)window.instgrm.Embeds.process();
+}
+
+// ── LIGHTBOX ──
+function openLb(src){document.getElementById('lb-img').src=src;document.getElementById('lightbox').classList.add('open');document.body.style.overflow='hidden';}
+function closeLb(){document.getElementById('lightbox').classList.remove('open');document.body.style.overflow='';}
+document.addEventListener('keydown',e=>{
+  if(e.key==='Escape'){closeLb();closeLogin();closeQR();}
+});
+
+function openQR(){document.getElementById('qr-modal').classList.add('open');document.body.style.overflow='hidden';}
+function closeQR(){document.getElementById('qr-modal').classList.remove('open');document.body.style.overflow='';}
+
+// ── INIT ──
+applyAdminUI();
+loadPosts();
+</script>
+</body>
+</html>

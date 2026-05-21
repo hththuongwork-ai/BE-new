@@ -1,4 +1,6 @@
 from pydantic import BaseModel
+from pydantic import ConfigDict, Field
+from typing import Optional, List
 
 class TodoCreate(BaseModel):
     title: str
@@ -6,6 +8,23 @@ class TodoCreate(BaseModel):
 
 class TodoResponse(TodoCreate):
     id: int
+    class Config:
+        from_attributes = True
 
+# Schemas cho Post
+class PostCreate(BaseModel):
+    model_config = ConfigDict(populate_by_name=True)
+
+    type: str
+    title: Optional[str] = None
+    body: Optional[str] = None
+    images: Optional[List[str]] = None   # FE gửi list URL
+    caption: Optional[str] = None
+    embed_url: Optional[str] = Field(default=None, alias="embedUrl")
+    url: Optional[str] = None
+    date: str
+
+class PostResponse(PostCreate):
+    id: int
     class Config:
         from_attributes = True
