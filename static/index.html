@@ -479,7 +479,12 @@ async function addPost(postData) {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(postData)
     });
-    return await res.json();
+    const data = await res.json();
+    if (!res.ok) {
+      const detail = Array.isArray(data.detail) ? 'Dữ liệu chưa hợp lệ' : (data.detail || 'Không lưu được bài viết');
+      throw new Error(detail);
+    }
+    return data;
 }
 async function removePost(id) {
     await fetch(`${API_URL}/posts/${id}`, { method: 'DELETE' });
@@ -583,17 +588,16 @@ async function pub(type) {
       document.getElementById('ig-caption').value='';
     }
     const saved = await addPost(p);
-    if (editingPostId) {
-      posts = posts.map(post => post.id === saved.id ? saved : post);
-      editingPostId = null;
-    } else {
-      posts.unshift(saved);
-    }
-    render();
+    activeCategory = saved.category || activeCategory;
+    renderCategoryTabs();
+    renderCategorySelect();
+    renderCategoryAdmin();
+    editingPostId = null;
+    await loadPosts();
     toast('Đã lưu bài viết 🌸');
     setTimeout(()=>{if(window.instgrm)window.instgrm.Embeds.process();},400);
   } catch(err) {
-    toast('Có lỗi xảy ra, thử lại nhé!');
+    toast(err.message || 'Có lỗi xảy ra, thử lại nhé!');
   } finally {
     setLoading(type,false);
   }

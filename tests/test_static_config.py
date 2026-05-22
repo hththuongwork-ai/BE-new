@@ -71,6 +71,15 @@ class StaticConfigTest(unittest.TestCase):
         self.assertIn(".gallery-frame", html)
         self.assertIn("padding:14px 20px 20px", html)
 
+    def test_frontend_reloads_posts_from_server_after_save(self):
+        html = Path("static/index.html").read_text(encoding="utf-8")
+
+        self.assertIn("if (!res.ok)", html)
+        self.assertIn("throw new Error", html)
+        self.assertIn("activeCategory = saved.category || activeCategory", html)
+        self.assertIn("await loadPosts()", html)
+        self.assertNotIn("posts.unshift(saved)", html)
+
 
 if __name__ == "__main__":
     unittest.main()

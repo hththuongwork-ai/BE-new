@@ -259,6 +259,9 @@ def update_post(id: int, data: schemas.PostCreate, db: Session = Depends(get_db)
 # ── UPLOAD ẢNH (gọi Cloudinary từ BE) ──
 @app.post("/upload")
 async def upload_image(image: UploadFile = File(...)):
+    if not CLOUDINARY_CLOUD or not CLOUDINARY_PRESET:
+        raise HTTPException(status_code=500, detail="Thiếu cấu hình Cloudinary")
+
     try:
         import httpx
     except ModuleNotFoundError:
@@ -271,7 +274,14 @@ async def upload_image(image: UploadFile = File(...)):
             data={"upload_preset": CLOUDINARY_PRESET},
             files={"file": (image.filename, contents, image.content_type)}
         )
-    data = res.json()
+    try:
+        data = res.json()
+    except ValueError:
+        raise HTTPException(status_code=502, detail="Cloudinary trả về phản hồi không hợp lệ")
+
     if "secure_url" not in data:
-        raise HTTPException(status_code=502, detail="Upload ảnh thất bại")
+        error = data.get("error", {})
+        message = error.get("message") if isinstance(error, dict) else None
+        detail = f"Upload ảnh thất bại: {message}" if message else "Upload ảnh thất bại"
+        raise HTTPException(status_code=502, detail=detail)
     return {"url": data["secure_url"]}
