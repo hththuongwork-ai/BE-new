@@ -11,6 +11,18 @@ class TodoResponse(TodoCreate):
     class Config:
         from_attributes = True
 
+class CategoryCreate(BaseModel):
+    name: str
+    slug: Optional[str] = None
+
+class CategoryResponse(BaseModel):
+    id: int
+    name: str
+    slug: str
+
+    class Config:
+        from_attributes = True
+
 # Schemas cho Post
 class PostCreate(BaseModel):
     model_config = ConfigDict(populate_by_name=True)
@@ -22,6 +34,7 @@ class PostCreate(BaseModel):
     caption: Optional[str] = None
     embed_url: Optional[str] = Field(default=None, alias="embedUrl")
     url: Optional[str] = None
+    category: str = "daily-life"
     date: str
 
 class PostResponse(PostCreate):
