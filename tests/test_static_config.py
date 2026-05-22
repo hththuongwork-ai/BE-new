@@ -8,7 +8,10 @@ class StaticConfigTest(unittest.TestCase):
 
         self.assertNotIn("${API}/", html)
         self.assertNotIn("JSONBIN_ID", html)
+        self.assertNotIn("CDN_PRESET", html)
+        self.assertNotIn("QR_IMAGE_URL", html)
         self.assertIn("window.location.origin", html)
+        self.assertIn('src="/qr-image"', html)
 
     def test_frontend_hides_admin_login_until_admin_entry_url(self):
         html = Path("static/index.html").read_text(encoding="utf-8")

@@ -8,7 +8,7 @@ import schemas
 from database import Base, engine, get_db
 from fastapi import Depends, FastAPI, File, HTTPException, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import FileResponse
+from fastapi.responses import FileResponse, RedirectResponse
 from pydantic import BaseModel
 from sqlalchemy import inspect, text
 from sqlalchemy.orm import Session
@@ -16,10 +16,10 @@ from sqlalchemy.orm import Session
 try:
     from dotenv import load_dotenv
 except ModuleNotFoundError:
-    def load_dotenv() -> bool:
+    def load_dotenv(*args, **kwargs) -> bool:
         return False
 
-load_dotenv()
+load_dotenv(dotenv_path=Path(__file__).parent / ".env")
 
 Base.metadata.create_all(bind=engine)
 
@@ -69,9 +69,10 @@ app.add_middleware(
 )
 
 STATIC_DIR = Path(__file__).parent / "static"
-ADMIN_PASSWORD = os.getenv("ADMIN_PASSWORD") or os.getenv("ADMIN_PASS") or "Thuong@0094@"
-CLOUDINARY_CLOUD = os.getenv("CLOUDINARY_CLOUD", "dffjnmuq4")
-CLOUDINARY_PRESET = os.getenv("CLOUDINARY_PRESET", "pcdnav5l")
+ADMIN_PASSWORD = os.getenv("ADMIN_PASSWORD") or os.getenv("ADMIN_PASS", "")
+CLOUDINARY_CLOUD = os.getenv("CLOUDINARY_CLOUD", "")
+CLOUDINARY_PRESET = os.getenv("CLOUDINARY_PRESET", "")
+QR_IMAGE_URL = os.getenv("QR_IMAGE_URL", "")
 
 
 class LoginRequest(BaseModel):
@@ -119,6 +120,13 @@ def serve_index():
 @app.get("/health")
 def health_check():
     return {"status": "ok"}
+
+
+@app.get("/qr-image")
+def qr_image():
+    if not QR_IMAGE_URL:
+        raise HTTPException(status_code=404, detail="QR image is not configured")
+    return RedirectResponse(QR_IMAGE_URL)
 
 
 @app.post("/auth/login")
