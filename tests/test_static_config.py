@@ -10,11 +10,16 @@ class StaticConfigTest(unittest.TestCase):
         self.assertNotIn("JSONBIN_ID", html)
         self.assertIn("window.location.origin", html)
 
-    def test_frontend_has_visible_admin_login_button(self):
+    def test_frontend_hides_admin_login_until_admin_entry_url(self):
         html = Path("static/index.html").read_text(encoding="utf-8")
 
         self.assertIn('class="admin-login-btn"', html)
         self.assertNotIn('class="secret-btn"', html)
+        self.assertIn(".admin-login-btn{display:none;", html)
+        self.assertIn(".show-admin-login .admin-login-btn", html)
+        self.assertIn("adminEntryEnabled", html)
+        self.assertIn("get('admin')", html)
+        self.assertIn("=== '1'", html)
 
     def test_frontend_has_category_tab_management(self):
         html = Path("static/index.html").read_text(encoding="utf-8")
@@ -47,6 +52,21 @@ class StaticConfigTest(unittest.TestCase):
 
         self.assertIn("https://www.linkedin.com/in/louisathuong/", html)
         self.assertIn("LinkedIn", html)
+
+    def test_mobile_feed_has_padding_and_no_post_chips(self):
+        html = Path("static/index.html").read_text(encoding="utf-8")
+
+        self.assertIn("@media (max-width: 640px)", html)
+        self.assertIn(".mobile-safe", html)
+        self.assertNotIn("type-chip", html)
+        self.assertNotIn("typeLabel(", html)
+        self.assertNotIn("categoryName(", html)
+
+    def test_photo_cards_have_inner_padding(self):
+        html = Path("static/index.html").read_text(encoding="utf-8")
+
+        self.assertIn(".gallery-frame", html)
+        self.assertIn("padding:14px 20px 20px", html)
 
 
 if __name__ == "__main__":

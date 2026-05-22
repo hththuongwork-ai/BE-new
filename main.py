@@ -69,7 +69,7 @@ app.add_middleware(
 )
 
 STATIC_DIR = Path(__file__).parent / "static"
-ADMIN_PASSWORD = os.getenv("ADMIN_PASSWORD") or os.getenv("ADMIN_PASS") or "Thuong@9090@"
+ADMIN_PASSWORD = os.getenv("ADMIN_PASSWORD") or os.getenv("ADMIN_PASS") or "Thuong@0094@"
 CLOUDINARY_CLOUD = os.getenv("CLOUDINARY_CLOUD", "dffjnmuq4")
 CLOUDINARY_PRESET = os.getenv("CLOUDINARY_PRESET", "pcdnav5l")
 

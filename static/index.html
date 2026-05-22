@@ -32,7 +32,8 @@ body{background:radial-gradient(circle at 15% 8%,rgba(255,215,226,0.85),transpar
 .pill svg{width:14px;height:14px;fill:currentColor;flex-shrink:0;}
 
 /* ADMIN LOGIN */
-.admin-login-btn{position:absolute;top:18px;right:20px;padding:8px 16px;border:1px solid var(--border);border-radius:30px;background:var(--glass);color:var(--mauve);font-family:'Nunito',sans-serif;font-size:0.68rem;font-weight:500;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;transition:all 0.25s;box-shadow:0 8px 24px rgba(159,83,104,0.10);backdrop-filter:blur(12px);}
+.admin-login-btn{display:none;position:absolute;top:18px;right:20px;padding:8px 16px;border:1px solid var(--border);border-radius:30px;background:var(--glass);color:var(--mauve);font-family:'Nunito',sans-serif;font-size:0.68rem;font-weight:500;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;transition:all 0.25s;box-shadow:0 8px 24px rgba(159,83,104,0.10);backdrop-filter:blur(12px);}
+.show-admin-login .admin-login-btn{display:block;}
 .admin-login-btn:hover{background:linear-gradient(135deg,var(--blush),var(--rose));border-color:transparent;color:white;transform:translateY(-1px);box-shadow:var(--glow);}
 .is-admin .admin-login-btn{display:none;}
 
@@ -126,13 +127,12 @@ textarea{resize:vertical;min-height:100px;}
 
 .post-card{background:linear-gradient(145deg,rgba(255,250,252,0.90),rgba(255,255,255,0.78));border:1px solid var(--border);border-radius:24px;overflow:hidden;margin-bottom:24px;box-shadow:var(--shadow);animation:fadeUp 0.5s ease both;transition:transform 0.2s,box-shadow 0.2s;backdrop-filter:blur(12px);}
 .post-card:hover{transform:translateY(-2px);box-shadow:0 22px 60px rgba(159,83,104,0.14);}
-.card-header{display:flex;align-items:center;justify-content:space-between;padding:16px 20px 0;}
+.card-header{display:flex;align-items:center;justify-content:space-between;padding:18px 20px 0;}
 .card-meta{display:flex;align-items:center;gap:10px;}
 .avatar{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,var(--rose-light),var(--blush));display:flex;align-items:center;justify-content:center;font-family:'Libre Baskerville',serif;font-style:italic;font-size:0.9rem;color:var(--mauve);flex-shrink:0;box-shadow:0 8px 20px rgba(217,137,159,0.22);}
 .card-author{font-size:0.82rem;font-weight:500;color:var(--text);}
 .card-date{font-size:0.7rem;color:var(--muted);margin-top:1px;}
-.card-actions{display:flex;gap:6px;align-items:center;}
-.type-chip{font-size:0.6rem;letter-spacing:1.5px;text-transform:uppercase;color:var(--mauve);background:rgba(255,215,226,0.42);padding:3px 10px;border-radius:20px;border:1px solid var(--border);}
+.card-actions{display:flex;gap:6px;align-items:center;min-width:62px;justify-content:flex-end;}
 .btn-del{display:none;background:none;border:none;color:var(--muted);cursor:pointer;font-size:0.75rem;padding:4px 8px;border-radius:6px;transition:all 0.2s;font-family:'Nunito',sans-serif;}
 .btn-del:hover{background:#fee;color:#c0392b;}
 .btn-edit{display:none;background:none;border:none;color:var(--muted);cursor:pointer;font-size:0.75rem;padding:4px 8px;border-radius:6px;transition:all 0.2s;font-family:'Nunito',sans-serif;}
@@ -143,12 +143,14 @@ textarea{resize:vertical;min-height:100px;}
 .post-title{font-family:'Libre Baskerville',serif;font-size:1.25rem;font-weight:400;color:var(--text);margin-bottom:10px;line-height:1.4;}
 .post-text{font-size:0.9rem;line-height:1.8;color:#604551;font-weight:300;}
 
+.gallery-frame{padding:14px 20px 20px;}
+.gallery-frame img{border-radius:18px;}
 .gallery-1 img{width:100%;max-height:500px;object-fit:cover;display:block;}
-.gallery-2{display:grid;grid-template-columns:1fr 1fr;gap:2px;}
-.gallery-3{display:grid;grid-template-columns:2fr 1fr;grid-template-rows:1fr 1fr;gap:2px;max-height:420px;}
+.gallery-2{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+.gallery-3{display:grid;grid-template-columns:2fr 1fr;grid-template-rows:1fr 1fr;gap:8px;max-height:420px;}
 .gallery-3 img:first-child{grid-row:span 2;}
-.gallery-4{display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;gap:2px;max-height:440px;}
-.gallery-many{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;}
+.gallery-4{display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;gap:8px;max-height:440px;}
+.gallery-many{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;}
 .gallery-2 img,.gallery-3 img,.gallery-4 img{width:100%;height:100%;object-fit:cover;display:block;}
 .gallery-many img{width:100%;aspect-ratio:1;object-fit:cover;display:block;}
 .img-caption{padding:12px 20px 16px;font-size:0.82rem;color:var(--muted);font-style:italic;font-family:'Libre Baskerville',serif;}
@@ -170,6 +172,32 @@ textarea{resize:vertical;min-height:100px;}
 .lightbox.open{opacity:1;pointer-events:all;}
 .lightbox img{max-width:90vw;max-height:90vh;object-fit:contain;border-radius:4px;}
 .lightbox-close{position:absolute;top:20px;right:24px;background:none;border:none;color:white;font-size:2rem;cursor:pointer;line-height:1;}
+
+@media (max-width: 640px) {
+  .mobile-safe{padding-left:18px;padding-right:18px;}
+  .hero{padding:52px 18px 44px;}
+  .hero-name{font-size:clamp(2.5rem,14vw,4rem);}
+  .social-pills{gap:8px;margin-top:24px;}
+  .pill{padding:8px 14px;font-size:0.66rem;}
+  .category-shell{padding:24px 18px 0;}
+  .category-tabs{justify-content:flex-start;overflow-x:auto;flex-wrap:nowrap;padding:0 2px 10px;scrollbar-width:none;}
+  .category-tabs::-webkit-scrollbar{display:none;}
+  .category-tab{flex:0 0 auto;padding:9px 16px;}
+  .page{padding:34px 18px 96px;}
+  .composer{border-radius:24px;padding:22px;margin-bottom:34px;}
+  .post-card{border-radius:24px;margin-bottom:28px;}
+  .card-header{padding:18px 18px 0;align-items:flex-start;}
+  .card-meta{gap:9px;min-width:0;}
+  .card-author{font-size:0.8rem;white-space:nowrap;}
+  .card-actions{padding-top:2px;}
+  .card-body{padding:18px 20px 22px;}
+  .gallery-frame{padding:14px 18px 20px;}
+  .gallery-frame img{border-radius:18px;}
+  .post-title{font-size:1.18rem;}
+  .post-text{font-size:0.96rem;line-height:1.75;}
+  .img-caption{padding:14px 20px 18px;}
+  .gallery-1 img{max-height:none;}
+}
 
 @keyframes fadeUp{from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:translateY(0);}}
 @keyframes spin{to{transform:rotate(360deg);}}
@@ -214,7 +242,7 @@ textarea{resize:vertical;min-height:100px;}
   <button class="admin-login-btn" onclick="openLogin()">Admin</button>
 </header>
 
-<div class="category-shell">
+<div class="category-shell mobile-safe">
   <div class="category-tabs" id="category-tabs"></div>
   <div class="category-admin" id="category-admin">
     <input type="text" id="new-category-name" placeholder="Tên tab mới..."/>
@@ -244,7 +272,7 @@ textarea{resize:vertical;min-height:100px;}
   </div>
 </div>
 
-<div class="page">
+<div class="page mobile-safe">
   <!-- COMPOSER — only visible to admin -->
   <div class="composer" id="composer">
     <div class="composer-head">✦ Thêm bài mới</div>
@@ -314,6 +342,11 @@ let pending = [];
 let curTab = 'text';
 let activeCategory = 'daily-life';
 let editingPostId = null;
+const adminEntryEnabled = new URLSearchParams(window.location.search).get('admin') === '1'
+  || sessionStorage.getItem('louisa_admin_entry') === '1';
+if (new URLSearchParams(window.location.search).get('admin') === '1') {
+  sessionStorage.setItem('louisa_admin_entry', '1');
+}
 let isAdmin = sessionStorage.getItem('louisa_admin') === '1';
 const DEFAULT_CATEGORY_SLUGS = ['work', 'daily-life', 'pet', 'travel'];
 
@@ -357,6 +390,7 @@ function applyAdminUI() {
   document.getElementById('composer').classList.toggle('show', isAdmin);
   document.getElementById('admin-bar').classList.toggle('show', isAdmin);
   document.body.classList.toggle('is-admin', isAdmin);
+  document.body.classList.toggle('show-admin-login', adminEntryEnabled && !isAdmin);
   renderCategoryAdmin();
   render();
 }
@@ -431,10 +465,6 @@ async function deleteCategory(slug) {
   await loadPosts();
   toast('Đã xóa tab');
 }
-function categoryName(slug) {
-  return categories.find(c => c.slug === slug)?.name || slug;
-}
-
 // ── POSTS ──
 async function loadPosts() {
     try {
@@ -618,8 +648,6 @@ function gallery(images) {
   }).join('')}</div>`;
 }
 
-function typeLabel(t){return{text:'Bài viết',photo:'Ảnh',video:'Video',instagram:'Instagram'}[t]||t;}
-
 // ── RENDER ──
 function render() {
   const feed=document.getElementById('feed');
@@ -630,7 +658,7 @@ function render() {
   feed.innerHTML=posts.map((p,i)=>{
     let inner='';
     if(p.type==='text')inner=`<div class="card-body">${p.title?`<div class="post-title">${p.title}</div>`:''}${p.body?`<div class="post-text">${p.body.replace(/\n/g,'<br/>')}</div>`:''}</div>`;
-    if(p.type==='photo')inner=`${gallery(p.images)}${p.caption?`<div class="img-caption">${p.caption}</div>`:''}`;
+    if(p.type==='photo')inner=`<div class="gallery-frame">${gallery(p.images)}</div>${p.caption?`<div class="img-caption">${p.caption}</div>`:''}`;
     if(p.type==='video')inner=`<div class="video-wrap"><iframe src="${p.embedUrl}" allowfullscreen loading="lazy"></iframe></div>${p.caption?`<div class="img-caption">${p.caption}</div>`:''}`;
     if(p.type==='instagram')inner=`<div class="ig-wrap"><blockquote class="instagram-media" data-instgrm-permalink="${p.url}" data-instgrm-version="14" style="width:100%;max-width:480px;"></blockquote></div>${p.caption?`<div class="img-caption">${p.caption}</div>`:''}`;
     return`<div class="post-card" style="animation-delay:${i*0.06}s">
@@ -640,8 +668,6 @@ function render() {
           <div><div class="card-author">Hoài Thương · Louisa</div><div class="card-date">${p.date}</div></div>
         </div>
         <div class="card-actions">
-          <span class="type-chip">${categoryName(p.category)}</span>
-          <span class="type-chip">${typeLabel(p.type)}</span>
           <button class="btn-edit" onclick="editPost(${p.id})">sửa</button>
           <button class="btn-del" onclick="delPost(${p.id})">× xoá</button>
         </div>
